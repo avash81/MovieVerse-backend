@@ -39,6 +39,15 @@ const mapToFrontendFormat = (item, isTv = false) => ({
   genre_ids: item.genre_ids || [],
 });
 
+// Add route for /api/movies
+router.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to MovieVerse API - Movies Route',
+    availableCategories: Object.keys(genreMap),
+    usage: 'Use /api/movies/categories/:categoryId to fetch movies by category (e.g., /api/movies/categories/trending)',
+  });
+});
+
 // Route to fetch movies by category
 router.get('/categories/:categoryId', async (req, res) => {
   const { categoryId } = req.params;
