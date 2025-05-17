@@ -25,6 +25,11 @@ app.use(cors());
 app.use(express.json());
 app.use(require('./middleware/errorHandler'));
 
+// Add root route
+app.get('/', (req, res) => {
+  res.json({ message: 'MovieVerse Backend is running!' });
+});
+
 // Routes
 let moviesRouter, authRouter, watchlistRouter, reviewsRouter;
 
