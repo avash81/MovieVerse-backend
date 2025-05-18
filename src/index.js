@@ -25,8 +25,11 @@ app.use(cors());
 app.use(express.json());
 app.use(require('./middleware/errorHandler'));
 
-// Add root route
-app.get('/', (req, res) => {
+// Serve static files from the 'public' directory (frontend build)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Add root route for backend health check
+app.get('/api', (req, res) => {
   res.json({ message: 'MovieVerse Backend is running!' });
 });
 
@@ -64,6 +67,11 @@ try {
 } catch (err) {
   console.error('Failed to load reviews route:', err.message);
 }
+
+// Fallback to serve index.html for React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 const DEFAULT_PORT = process.env.PORT || 5001;
 const tryPort = (port) => {
