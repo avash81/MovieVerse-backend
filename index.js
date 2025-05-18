@@ -25,8 +25,8 @@ app.use(cors());
 app.use(express.json());
 app.use(require('./src/middleware/errorHandler'));
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files from the 'public/build' directory
+app.use(express.static(path.join(__dirname, 'public', 'build')));
 
 // Add root route for backend health check
 app.get('/api', (req, res) => {
@@ -70,7 +70,7 @@ try {
 
 // Fallback to serve index.html for React Router
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'build', 'index.html'));
 });
 
 const DEFAULT_PORT = process.env.PORT || 5001;
