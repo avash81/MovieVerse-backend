@@ -2,10 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Review = require('../models/Review');
 
-// Email validation regex
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Submit a new review
 router.post('/:source/:externalId', async (req, res) => {
   const { source, externalId } = req.params;
   const { text, name, email } = req.body;
@@ -41,7 +39,6 @@ router.post('/:source/:externalId', async (req, res) => {
   }
 });
 
-// Submit a reply to a review
 router.post('/:source/:externalId/reply/:reviewId', async (req, res) => {
   const { source, externalId, reviewId } = req.params;
   const { text, name, email } = req.body;
@@ -63,7 +60,6 @@ router.post('/:source/:externalId/reply/:reviewId', async (req, res) => {
       return res.status(404).json({ msg: 'Review not found' });
     }
 
-    // Ensure source and externalId match
     if (review.source !== source || review.externalId !== externalId) {
       console.error(`Review mismatch: expected source=${source}, externalId=${externalId}; found source=${review.source}, externalId=${review.externalId}`);
       return res.status(400).json({ msg: 'Review does not match the specified movie' });
@@ -90,7 +86,6 @@ router.post('/:source/:externalId/reply/:reviewId', async (req, res) => {
   }
 });
 
-// Get all reviews for a movie
 router.get('/:source/:externalId', async (req, res) => {
   const { source, externalId } = req.params;
 
@@ -98,7 +93,6 @@ router.get('/:source/:externalId', async (req, res) => {
     const reviews = await Review.find({ source, externalId })
       .sort({ createdAt: -1 })
       .lean();
-
     res.json(reviews);
   } catch (err) {
     console.error('Error fetching reviews:', {
